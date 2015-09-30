@@ -16,5 +16,5 @@ alias tortoisegit='/c/Program\ Files/TortoiseGit/bin/TortoiseGitProc.exe'
 
 log()
 {
-    tortoisegit /Command:log /Path:.
+    tortoisegit /Command:log /Path:. &
 }
