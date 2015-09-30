@@ -30,7 +30,7 @@ __source_files $HOME/.init/`hostname` "POST"
 
 cd $HOME
 initialise_repos
-#cd $git_root
+cd $git_root
 
 
 
