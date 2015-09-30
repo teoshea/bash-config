@@ -37,12 +37,6 @@ alias find-remote="git remote | grep $1"
 ## FUNCTIONS: Simple Git related user functions (handy shortcuts)
 #################################################################
 
-# Show log
-log()
-{
-    gitg &
-}
-
 # Go to Git root
 gr()
 {

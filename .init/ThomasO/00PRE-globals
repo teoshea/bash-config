@@ -10,3 +10,11 @@ export git_exclude="$git_template/exclude"
 export git_repository_fetchurl_re="Fetch URL: git@github\.com:([-_0-9A-Za-z]+)\/([-_0-9A-Za-z]+)"
 export mi_merge_branches_file="$git_folder/MI_MERGE_BRANCHES"
 export git_support_file="$git_folder/git_support"
+
+alias msbuild='/c/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe'
+alias tortoisegit='/c/Program\ Files/TortoiseGit/bin/TortoiseGitProc.exe'
+
+log()
+{
+    tortoisegit /Command:log /Path:.
+}

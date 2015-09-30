@@ -13,20 +13,24 @@ PS1="$PS1"'$ '                 # prompt: always $
 
 __source_files()
 {
-	for f in `find $1 -maxdepth 1 -type f \( ! -name ".*" \) | sort -h`
+	for f in `find $1 -maxdepth 1 -type f \( -name "*$2*" -and ! -iname ".*" \) | sort -h`
 	do
 		. $f
 	done
 }
 
-## HOST SPECIFIC SETUP
-__source_files $HOME/.init/`hostname`
+## HOST SPECIFIC PRE-SETUP
+__source_files $HOME/.init/`hostname` "PRE"
 
 ## GENERIC SETUP
-__source_files $HOME/.init
+__source_files $HOME/.init ""
 
+## HOST SPECIFIC POST-SETUP
+__source_files $HOME/.init/`hostname` "POST"
+
+cd $HOME
 initialise_repos
-cd $git_root
+#cd $git_root
 
 
 
