@@ -1,0 +1,63 @@
+#!/bin/sh
+
+merge_branches=$next
+merged_branches=`git branch --all --merged`
+unmerged_branches=`git branch --all --no-merged`
+latest_only=0
+
+if [[ $(is-mi) = "MI" ]]; then
+
+    echo "Preparing MI Checkout..."
+    git remote update central
+    
+    for branch_name in $merged_branches
+    do
+        if [[ $branch_name =~ ${upcoming_done_re} ]];
+        then
+            latest_only=1
+            break
+        fi
+        if [[ $branch_name =~ ${released_done_re} ]];
+        then
+            merged_versions="$merged_versions ${BASH_REMATCH[1]//./}"
+            merged_true_versions="$merged_true_versions ${BASH_REMATCH[1]}"
+        fi
+    done
+
+    if [[ $latest_only -eq 0 ]];
+    then
+        for branch_name in $unmerged_branches
+        do
+            if [[ $branch_name =~ $released_next_re ]];
+            then
+                unmerged_versions="$unmerged_versions ${BASH_REMATCH[1]//./}"
+                unmerged_true_versions="$unmerged_true_versions ${BASH_REMATCH[1]}"
+            fi
+        done
+
+        unmerged_versions=$(for v in "${unmerged_versions[@]}"; do echo "$v"; done | tr ' ' '\n' | sort -g | uniq | tr '\n' ' ')
+        unmerged_true_versions=$(for v in "${unmerged_true_versions[@]}"; do echo "$v"; done | tr ' ' '\n' | sort -g | uniq | tr '\n' ' ')
+        
+        read -a merged_versions_array <<<$merged_versions
+        read -a true_merged_versions_array <<<$merged_true_versions
+        read -a unmerged_versions_array <<<$unmerged_versions
+        read -a true_unmerged_versions_array <<<$unmerged_true_versions
+
+        biggest=${merged_versions_array[0]} position=0
+
+        for i in "${!merged_versions_array[@]}"; do
+	        (( ${merged_versions_array[i]} > biggest )) && biggest=${merged_versions_array[i]} position=$i
+        done
+
+        position=0
+                
+        for i in ${!unmerged_versions_array[@]}; do
+            (( ${unmerged_versions_array[i]} >= $biggest )) &&
+                merge_branches="$merge_branches ${releases}/${true_unmerged_versions_array[i]}/$next"
+        done
+
+    fi
+
+    echo $merge_branches > "$mi_merge_branches_file"
+fi
+
