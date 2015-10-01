@@ -184,7 +184,7 @@ pr()
        for (( i = 0 ; i < ${#branches[@]} ; i++ ))
        do
            IFS=$' ' read -ra branch_details <<< "${branches[i]}"
-           
+
            local version_suffix="(${branch_details[1]})"
            local title="${branchname^^}: $summary ${version_suffix,,}"
 

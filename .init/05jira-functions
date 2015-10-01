@@ -30,5 +30,5 @@ get_jira_issue_summary()
        return -1
     fi
 
-    __invoke_jira_restmethod issue $1 | jq ".fields.summary"
+    __invoke_jira_restmethod issue $1 | jq ".fields.summary" | tr -d "\""
 }
