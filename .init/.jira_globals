@@ -1,2 +1,0 @@
-export jira_granta_baseurl="https://grantadesign.atlassian.net"
-export jira_rest_url=$jira_granta_baseurl/rest/api/2

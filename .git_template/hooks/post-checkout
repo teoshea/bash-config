@@ -24,6 +24,8 @@ if [[ $(is-mi) = "MI" ]]; then
         fi
     done
 
+    echo "$next Next" > $mi_merge_branches_file
+    
     if [[ $latest_only -eq 0 ]];
     then
         for branch_name in $unmerged_branches
@@ -50,14 +52,15 @@ if [[ $(is-mi) = "MI" ]]; then
         done
 
         position=0
-                
-        for i in ${!unmerged_versions_array[@]}; do
-            (( ${unmerged_versions_array[i]} >= $biggest )) &&
-                merge_branches="$merge_branches ${releases}/${true_unmerged_versions_array[i]}/$next"
+
+        for i in ${!unmerged_versions_array[@]};
+        do           
+            if [ ${unmerged_versions_array[i]} -ge $biggest ];
+            then
+                echo -n "${releases}/${true_unmerged_versions_array[i]}/$next " >> $mi_merge_branches_file
+                echo "${true_unmerged_versions_array[i]}" >> $mi_merge_branches_file
+            fi
         done
-
     fi
-
-    echo $merge_branches > "$mi_merge_branches_file"
 fi
 

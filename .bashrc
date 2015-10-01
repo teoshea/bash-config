@@ -1,3 +1,6 @@
+## PATH
+PATH=$home/bin:$PATH
+
 ## BASH PROMPT
 PS1='\[\033]0;Git Bash\007\]'  # set window title
 PS1="$PS1"'\n'                 # new line
