@@ -24,7 +24,7 @@ if [[ $(is-mi) = "MI" ]]; then
         fi
     done
 
-    echo "$next Next" > $mi_merge_branches_file
+    echo "$next Next" > ${mi_merge_branches_file}
     
     if [[ $latest_only -eq 0 ]];
     then

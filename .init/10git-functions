@@ -2,23 +2,23 @@
 ## GLOBALS
 #################################################################
 
-remotes_ref="remotes"
-central="central"
-releases="releases"
-next="next"
-done="done"
-released_done_re="${releases}\/([0-9]+\.[0-9]+)\/${done}"
-released_next_re="${releases}\/([0-9]+\.[0-9]+)\/${next}"
-upcoming_done_re="${remotes_ref}\/${central}\/${done}"
+export remotes_ref="remotes"
+export central="central"
+export releases="releases"
+export next="next"
+export done="done"
+export released_done_re="${releases}\/([0-9]+\.[0-9]+)\/${done}"
+export released_next_re="${releases}\/([0-9]+\.[0-9]+)\/${next}"
+export upcoming_done_re="${remotes_ref}\/${central}\/${done}"
 
-git_folder=".git"
-git_template="$HOME/.git_template"
-git_hooks="$git_template/hooks"
-git_exclude="$git_template/exclude"
-git_repository_fetchurl_re="Fetch URL: git@github\.com:([-_0-9A-Za-z]+)\/([-_0-9A-Za-z]+)"
-git_support_file="$git_folder/git_support"
+export git_folder=".git"
+export git_template="$HOME/.git_template"
+export git_hooks="$git_template/hooks"
+export git_exclude="$git_template/exclude"
+export git_repository_fetchurl_re="Fetch URL: git@github\.com:([-_0-9A-Za-z]+)\/([-_0-9A-Za-z]+)"
+export git_support_file="$git_folder/git_support"
 
-mi_merge_branches_file="$git_folder/MI_MERGE_BRANCHES"
+export mi_merge_branches_file="$git_folder/MI_MERGE_BRANCHES"
 
 declare -A git_remotes=( ["ivan"]="ivantheterrible"
                          ["liz"]="LizTattersall"
@@ -183,14 +183,12 @@ pr()
 
        for (( i = 0 ; i < ${#branches[@]} ; i++ ))
        do
-           echo ${branches[i]}
            IFS=$' ' read -ra branch_details <<< "${branches[i]}"
            
            local version_suffix="(${branch_details[1]})"
            local title="${branchname^^}: $summary ${version_suffix,,}"
 
            echo $title
-
        done
     else
         echo "Not in an MI Repo, so can't use the auto PR script yet"
