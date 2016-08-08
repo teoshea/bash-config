@@ -1,39 +1,33 @@
-## PATH
-PATH=$home/bin:$PATH
+########################################################################
+#                                                                      #
+#   This .bashrc is executed by each bash shell as it starts.          #
+#                                                                      #
+#   This file is provided by Maths for new users.  We strongly suggest #
+#   you do NOT delete it unless you are ABSOLUTELY sure you know what  #
+#   you are doing.  You may modify it by adding commands at the end.   #
+#                                                                      #
+########################################################################
 
-## BASH PROMPT
-PS1='\[\033]0;Git Bash\007\]'  # set window title
-PS1="$PS1"'\n'                 # new line
-PS1="$PS1"'\[\033[32m\]'       # change to green
-PS1="$PS1"'\u@\h '             # user@host<space>
-PS1="$PS1"'\[\033[33m\]'       # change to brownish yellow
-PS1="$PS1"'\w'                 # current working directory
-PS1="$PS1"'\[\033[36m\]'       # change color to cyan
-PS1="$PS1"'`__git_ps1`'   	   # bash function
-PS1="$PS1"'\[\033[0m\]'        # change color
-PS1="$PS1"'\n'                 # new line
-PS1="$PS1"'$ '                 # prompt: always $
+#
+# Execute the global Maths Bashrc
+#
 
-__source_files()
-{
-	for f in `find $1 -maxdepth 1 -type f \( -name "*$2*" -and ! -iname ".*" \) | sort -h`
-	do
-		. $f
-	done
-}
+if [ -r /alt/ssetup/shellconfig/Bashrc ]; then
+    . /alt/ssetup/shellconfig/Bashrc
+fi
 
-## HOST SPECIFIC PRE-SETUP
-__source_files $HOME/.init/`hostname` "PRE"
+#
+# Add personal customisation commands after this line ------------------
+#
 
-## GENERIC SETUP
-__source_files $HOME/.init ""
+if [ -r ~/.dotfiles/.bashrc ] ; then
+    . ~/.dotfiles/.bashrc
+fi
 
-## HOST SPECIFIC POST-SETUP
-__source_files $HOME/.init/`hostname` "POST"
+export PATH=/alt/applic/user-maint/mr349/netbeans-8.0.1/bin:$PATH
 
-cd $HOME
-initialise_repos
-cd $git_root
+# Set umask to 077.  This means that by default new files will only be
+# readable and writable by you.  If you want others to be able to read
+# new files you create, replace this line with umask 0022
 
-
-
+umask 0077

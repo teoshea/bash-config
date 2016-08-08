@@ -1,59 +1,26 @@
-SSH="/usr/bin/ssh"
-SSH_ENV="$HOME/.ssh/environment"
+########################################################################
+#                                                                      #
+#   This file is executed by bash when you login.                      #
+#                                                                      #
+#   This file is provided by Maths for new users.  We strongly suggest #
+#   you do NOT delete it unless you are ABSOLUTELY sure you know what  #
+#   you are doing.  You may modify it by adding commands at the end.   #
+#                                                                      #
+########################################################################
 
-# Note: ~/.ssh/environment should not be used, as it
-#       already has a different purpose in SSH.
+#
+# Execute the global Maths initialisation file
+#
 
-env=$HOME/.ssh/agent.env
-
-# Note: Don't bother checking SSH_AGENT_PID. It's not used
-#       by SSH itself, and it might even be incorrect
-#       (for example, when using agent-forwarding over SSH).
-
-agent_is_running() {
-    if [ "$SSH_AUTH_SOCK" ]; then
-        # ssh-add returns:
-        #   0 = agent running, has keys
-        #   1 = agent running, no keys
-        #   2 = agent not running
-        ssh-add -l >/dev/null 2>&1 || [ $? -eq 1 ]
-    else
-        false
-    fi
-}
-
-agent_has_keys() {
-    ssh-add -l >/dev/null 2>&1
-}
-
-agent_load_env() {
-    . "$env" >/dev/null
-}
-
-agent_start() {
-    (umask 077; ssh-agent >"$env")
-    . "$env" >/dev/null
-}
-
-if ! agent_is_running && [ -s "$env" ]; then
-    agent_load_env
+if [ -r /alt/ssetup/shellconfig/Bash_profile ] ; then
+    . /alt/ssetup/shellconfig/Bash_profile
 fi
 
-if ! agent_is_running; then
-    ssh-agent >"$env"
-    . "$env" > /dev/null
+#
+# Add personal customisation commands after this line -----------------
+#
+
+if [ -r ~/.dotfiles/.bash_profile ] ; then
+    . ~/.dotfiles/.bash_profile
 fi
 
-# if your keys are not stored in ~/.ssh/id_rsa.pub or ~/.ssh/id_dsa.pub, you'll need
-# to paste the proper path after ssh-add
-if ! agent_is_running; then
-    agent_start
-    ssh-add
-elif ! agent_has_keys; then
-  ssh-add
-fi
-
-unset env
-
-# Then get bashrc
-if [ -f ~/.bashrc ]; then . ~/.bashrc; fi

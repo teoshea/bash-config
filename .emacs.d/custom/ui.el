@@ -29,7 +29,7 @@
 (load-theme 'tomorrow-night-bright t)
 
 ;; I like consolas
-(set-default-font "Consolas 12")
+(set-frame-font "Inconsolata 12")
 
 ;; increase font size for better readability
 (set-face-attribute 'default nil :height 130)
