@@ -19,8 +19,3 @@ fi
 #
 # Add personal customisation commands after this line -----------------
 #
-
-if [ -r ~/.dotfiles/.bash_profile ] ; then
-    . ~/.dotfiles/.bash_profile
-fi
-

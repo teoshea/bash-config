@@ -9,4 +9,9 @@
 (setq create-lockfiles nil)
 
 ;; Go straight to scratch buffer on startup
+;; No splash screen, no initial scratch text
+;; and plump for org-mode as initial major mode
 (setq inhibit-startup-message t)
+(setq inhibit-splash-screen t
+      initial-scratch-message nil
+      initial-major-mode 'org-mode)

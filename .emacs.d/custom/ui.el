@@ -4,11 +4,11 @@
 ;; a matter of preference and may require some fiddling to match your
 ;; preferences
 
-;; Turn off the menu bar at the top of each frame because it's distracting
-(menu-bar-mode -1)
-
 ;; Show line numbers
 (global-linum-mode)
+
+;; Turn off the menu bar at the top of each frame because it's distracting
+(menu-bar-mode -1)
 
 ;; You can uncomment this to remove the graphical toolbar at the top. After
 ;; awhile, you won't need the toolbar.
@@ -19,6 +19,11 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
+;; Empty line marker on left hand side
+(setq-default indicate-empty-lines t)
+(when (not indicate-empty-lines)
+  (toggle-indicate-empty-lines))
+
 ;; Color Themes
 ;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
 ;; for a great explanation of emacs color themes.
@@ -28,10 +33,10 @@
 (add-to-list 'load-path "~/.emacs.d/themes")
 (load-theme 'tomorrow-night-bright t)
 
-;; I like consolas
+;; Set preferred font
 (set-frame-font "Inconsolata 12")
 
-;; increase font size for better readability
+;; Increase font size for better readability
 (set-face-attribute 'default nil :height 130)
 
 ;; Uncomment the lines below by removing semicolons and play with the
@@ -61,6 +66,10 @@
       ;; Mouse yank commands yank at point instead of at click.
       mouse-yank-at-point t)
 
+;; Typing over selected text deletes whole selected block
+(delete-selection-mode t)
+(transient-mark-mode t)
+
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
 
@@ -72,3 +81,6 @@
 
 ;; no bell
 (setq ring-bell-function 'ignore)
+
+(setq echo-keystrokes 0.1
+      use-dialog-box nil)
