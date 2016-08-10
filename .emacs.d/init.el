@@ -14,6 +14,9 @@
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
 
+    ;; Web-Mode
+    web-mode
+    
     ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
     ;; TODO - enable once required
@@ -28,9 +31,21 @@
     ;; TODO - enable once required
     ;; cider
 
+    ;; Auto-Complete
+    auto-complete
+    
+    ;; Flycheck
+    flycheck
+
     ;; PHP Mode
     php-mode
 
+    ;; AC-PHP
+    ac-php
+
+    ;;PHPUnit
+    phpunit
+    
     ;; allow ido usage in as many contexts as possible. see
     ;; customizations/navigation.el line 23 for a description
     ;; of ido
@@ -95,11 +110,9 @@
 ;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
 ;; then you can add the following code to this file:
 ;;
+;; Adding this code will make Emacs enter yaml mode whenever you open a .yml file
 ;; (require 'yaml-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;; 
-;; Adding this code will make Emacs enter yaml mode whenever you open a .yml file
-(add-to-list 'load-path "~/.emacs.d/vendor")
 
 ;;;;
 ;; Customization
@@ -108,8 +121,9 @@
 ;; Store init.el in register i - so we can jump to this file with C-x r j i
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
 
-;; Add a directory to our load path so that when you `load` things
+;; Add a directory to our load paths so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
+(add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'load-path "~/.emacs.d/custom")
 
 ;; Sets up exec-path-from-shell so that Emacs will use the correct
@@ -136,7 +150,25 @@
 ;; Keybindings
 (load "keybindings.el")
 
-;; Language-specific
-;; Sort these out on a per-language basis
+;; Package and language-specific
+;;
+
+;; Linum
+(load "setup-linum.el")
+
+;; Web-Mode
+(load "setup-web-mode.el")
+
+;; Auto-Complete
+(load "setup-auto-complete.el")
+
+;; Flycheck
+(load "setup-flycheck.el")
+
+;; AC-PHP
+(load "setup-ac-php.el")
+
+
+
 ;; (load "setup-clojure.el")
 ;; (load "setup-js.el")
