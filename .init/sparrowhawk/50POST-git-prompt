@@ -1,0 +1,21 @@
+damtppromptcm () {
+    if [ -x /usr/bin/pawd ]; then
+        PWD=$(pawd $(pawd $PWD))
+    fi
+    myPWD='\w'
+    if [ ${#PWD} -gt 55 ]; then
+        myPWD="${PWD:0:20} ... ${PWD:${#PWD}-30}"
+    fi
+
+    PS1="\[\033]0;$myPWD\007\]"    # set window title
+    PS1="$PS1"'\n'                 # new line
+    PS1="$PS1"'\[\033[32m\]'       # change to green
+    PS1="$PS1"'\u@\h:'             # user@host:
+    PS1="$PS1"'\[\033[33m\]'       # change to brownish yellow
+    PS1="$PS1$myPWD"               # current working directory
+    PS1="$PS1"'\[\033[36m\]'       # change color to cyan
+    PS1="$PS1"'`__git_ps1`'        # bash function
+    PS1="$PS1"'\[\033[0m\]'        # change color
+    PS1="$PS1"'\n'                 # new line
+    PS1="$PS1"'$ '                 # prompt: always $
+}

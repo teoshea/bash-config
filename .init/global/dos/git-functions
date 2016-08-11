@@ -1,0 +1,333 @@
+#################################################################
+## GLOBALS
+#################################################################
+
+export remotes_ref="remotes"
+export central="central"
+export releases="releases"
+export next="next"
+export done="done"
+export released_done_re="${releases}\/([0-9]+\.[0-9]+)\/${done}"
+export released_next_re="${releases}\/([0-9]+\.[0-9]+)\/${next}"
+export upcoming_done_re="${remotes_ref}\/${central}\/${done}"
+
+export git_folder=".git"
+export git_template="$HOME/.git_template"
+export git_repository_fetchurl_re="Fetch URL: git@github\.com:([-_0-9A-Za-z]+)\/([-_0-9A-Za-z]+)"
+export git_support_file="$git_folder/git_support"
+
+export mi_merge_branches_file="$git_folder/MI_MERGE_BRANCHES"
+
+declare -A git_remotes=( ["ivan"]="ivantheterrible"
+                         ["liz"]="LizTattersall"
+                         ["peter"]="peterchase"
+                         ["matthew"]="matthewrkitson"
+                         ["konrad"]=konrad-zielinski)
+
+declare -A git_repository_properties
+
+alias st="git status"                   # Status
+alias ru="git remote update"            # Remote Update
+alias rb="git branch -m"                # Rename Branch
+alias cm="git commit -m"                # Commit With Comment
+alias fo="git remote update origin"     # Fetch Origin
+alias rhh="git reset HEAD --hard"       # Reset HEAD hard
+alias co="git checkout"                 # Checkout
+alias ai="git add --interactive"        # Add interactive
+alias au="git add --update"             # Add updated
+alias aa="git add --all"                # Add all
+alias ca="git commit --amend"           # Amend commit
+alias find-remote="git remote | grep $1"
+
+
+#################################################################
+## FUNCTIONS: Simple Git related user functions (handy shortcuts)
+#################################################################
+
+# Go to Git root
+gr()
+{
+    cd $git_root
+}
+export -f gr
+
+# Get top level folder of repository
+toplevel()
+{
+    git rev-parse --show-toplevel
+}
+export -f toplevel
+
+# Create Branch at...
+cb()
+{
+    if [ -z ${1+x} ]; then
+       echo "cb - Create Branch at..."
+       echo "Usage: cb new-branchname [basedon-branchname]"
+       return -1
+    fi
+
+    git checkout -B $1 $2
+}
+export -f cb
+
+# Unstage Files
+us()
+{
+    if [ -z ${1+x} ]; then
+        echo "us - Unstage files..."
+        echo "Usage: us file1 [file2...]"
+        return -1
+    fi
+
+    for i in $@
+    do
+        git reset HEAD `find -name "$i*"`
+    done
+}
+export -f us
+    
+# Revert Files
+rv()                                    
+{
+    if [ -z ${1+x} ]; then
+        echo "rv - Revert files..."
+        echo "Usage: rv file1 [file2...]"
+        return -1
+    fi
+
+    for i in $@
+    do
+        git checkout -- "*$i*"
+    done
+}
+export -f rv
+
+# Add Files
+af()
+{
+    if [ -z ${1+x} ]; then
+        echo "af - Add (stage) files..."
+        echo "Usage: af file1 [file2...]"
+        return -1
+    fi
+
+    for i in $@
+    do
+        git add `find -name "$i*"`
+    done
+}
+export -f af
+
+# Push to Origin
+po()
+{
+    git push origin `git rev-parse --abbrev-ref HEAD` ${*}
+}
+export -f po
+
+# Remote Pull
+fr()
+{
+    if [ -z ${1+x} ] || [ -z ${2+x} ]; then
+        echo "fr - Fetch from remote..."
+        echo "Usage: fr remotealias remotebranch"
+        return -1
+    fi
+
+    remote_alias=$1
+    branch_name=$2
+        
+    __ensure_remote_available $remote_alias
+    foundbranchname=`git branch | grep ${branch_name}`
+    
+    if [ -z ${foundbranchname+x} ]; then
+        git fetch ${repository_alias} ${branch_name}
+        git checkout -b ${branch_name} "remotes/${remote_alias}/${branch_name}" --track
+        git --set-upstream-to=${remote_alias}/${branch_name}
+    else
+        git fetch ${remote_alias} ${branch_name}:${branch_name}
+        git checkout ${branch_name}
+    fi
+}
+export -f fr
+
+# Check if we're in an MI repo
+is-mi()
+{
+    local toplevelfolder=$(git rev-parse --show-toplevel 2> /dev/null)
+
+    if [ -f ${toplevelfolder}/BuildVersions.xml ]; then
+       echo "MI"
+    else
+       echo "NOT MI"
+    fi
+}
+export -f is-mi
+
+## Advanced Git related user functions
+
+pr()
+{
+    if [[ $(is-mi) = "MI" ]]; then
+
+       local fullbranchname=`git rev-parse --abbrev-ref HEAD`
+       local branchname=`basename $fullbranchname`
+       local summary=`get_jira_issue_summary $branchname`
+
+       IFS=$'\n' read -d '' -ra branches < $mi_merge_branches_file
+
+       echo "Will attempt to create ${#branches[@]} pull request(s)..."
+
+       for (( i = 0 ; i < ${#branches[@]} ; i++ ))
+       do
+           IFS=$' ' read -ra branch_details <<< "${branches[i]}"
+
+           local version_suffix="(${branch_details[1]})"
+           local title="${branchname^^}: $summary ${version_suffix,,}"
+
+           echo $title
+       done
+    else
+        echo "Not in an MI Repo, so can't use the auto PR script yet"
+    fi
+}
+
+
+## Git related administrative functions
+
+# Check whether or not an aliased remote is available.
+findremote()
+{
+    if [ -z $1 ]; then echo "Usage: findremote remotealias"; return 0; fi
+
+    git remote 2> /dev/null | grep $1
+
+    if [ ! -z $? ]; then return -1; fi
+}
+
+# Initialise git repositories, so that they contain:
+# (a) my specific exclusions for local files
+# (b) my git hooks
+# (c) supporting information (including the origin and central repo names) so
+#     that we can use some clever scripts to make pull requests
+initialise_repos()
+{
+    # Go through all the clones in the git root
+    for git_repo_folder in `find $git_root -type d -maxdepth 1 2> /dev/null`
+    do
+        # Check to see if the folders are indeed git repositories
+        if [ -d $git_repo_folder/$git_folder ]; then
+
+            # Check if we've adding the additional support
+            if [ ! -f $git_repo_folder/$git_support_file ]; then
+
+                echo "Setting up $git_repo_folder..."
+
+                # If not make the support files
+                touch $git_repo_folder/$git_support_file
+
+                # Add entries for origin
+                __make_git_support_repo_entries origin $git_repo_folder
+                # Add entries for central
+                __make_git_support_repo_entries central $git_repo_folder
+            fi
+
+            # Source the support files
+            . $git_repo_folder/$git_support_file
+
+            # Copy anything globalish (exclusions, hooks)
+            copy_local_git_files $git_repo_folder
+        fi
+    done
+}
+
+# Makes entries in the "git_support_file" containing origin and central repos
+# which should enable us to auto generate pull requests for the repo
+# __ prefix - ie. shouldn't be called by a user
+__make_git_support_repo_entries()
+{
+    cd $2
+
+    local repo_alias=$1
+    local rootfolder=$2
+    local foldername=`basename ${rootfolder}`
+    local gitremote=`git remote | grep $repo_alias`
+
+    if [ -z ${gitremote} ]; then
+        return 1
+    fi
+
+    local remoteinfo=`git remote show $repo_alias`
+    
+    if [[ $remoteinfo =~ $git_repository_fetchurl_re ]];
+    then
+        echo "git_repository_properties[\"${foldername}_${repo_alias}_username\"]=${BASH_REMATCH[1]}" >> $rootfolder/$git_support_file
+        echo "git_repository_properties[\"${foldername}_${repo_alias}_repository\"]=${BASH_REMATCH[2]}" >> $rootfolder/$git_support_file
+    fi
+}
+
+# Copies exclusions, hooks etc. from $HOME to the repo
+copy_local_git_files()
+{
+    local git_repo_folder="$1"
+
+    if [ -z $git_repo_folder ]; then
+       local git_repo_folder=$(toplevel)
+
+       if [[ $? -ne 0 ]]; then
+          return -2
+       fi
+    fi
+    
+    # Supply the custom git items (update only)
+    cp -u -R $git_template $git_repo_folder/$git_folder
+}
+
+# Remove git support files
+# __ prefix - ie. shouldn't be called by a user
+__remove_git_support_files()
+{
+    for git_repo_to_clean in `find $git_root -type d -maxdepth 1 2> /dev/null`
+    do
+        if [ -f $git_repo_to_clean/$git_support_file ]; then
+            rm $git_repo_to_clean/$git_support_file
+
+            # Additional cleanup
+            # rm -f $git_repo_to_clean/.git/gitsupport
+            # rm -f $git_repo_to_clean/.git/.git_support
+        fi
+    done
+}
+
+# Refreshes git support files
+# __ prefix - ie. shouldn't be called by a user
+__refresh_git_support_files()
+{
+    __remove_git_support_files
+    __make_git_support_files
+}
+
+# Ensures that an aliased remote is available, and attaches it if not
+# __ prefix - ie. shouldn't be called by a user
+__ensure_remote_available()
+{
+    local repo_folder=`git rev-parse --show-toplevel`
+    local repo_base=`basename ${repo_folder}`
+    local repository=${git_repository_properties["${repo_base}_origin_repository"]}
+    
+    local remote_alias="$1"
+    local remote_name=${git_remotes["$remote_alias"]}
+
+    if [ -z $remote_name ]; then
+        echo "Remote alias $remote_alias is not defined"
+        return 1
+    fi
+    
+    local remote_url="git@github.com:${remote_name}/$repository.git"
+    local foundremote=`find-remote ${remote_alias}`
+    
+    if [ -z $foundremote ]; then
+        git remote add $remote_alias $remote_url
+    fi
+}
