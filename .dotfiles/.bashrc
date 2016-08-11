@@ -11,21 +11,22 @@ __source_files()
 	done
 }
 
-INIT_FOLDER="$HOME/.init/`hostname`"
+INIT_FOLDER="$HOME/.init"
+SPECIFIC_INIT_FOLDER="$HOME/.init/$GIT_HOME_CONFIG"
 
 ## HOST SPECIFIC PRE-SETUP
-if [ -d $INIT_FOLDER ] ; then
-  __source_files $HOME/.init/`hostname` "PRE"
+if [ -d $SPECIFIC_INIT_FOLDER ] ; then
+  __source_files $SPECIFIC_INIT_FOLDER "PRE"
 fi
 
 ## GENERIC SETUP
 if [ -d $INIT_FOLDER ] ; then
-  __source_files $HOME/.init ""
+  __source_files $INIT_FOLDER ""
 fi
 
 ## HOST SPECIFIC POST-SETUP
-if [ -d $INIT_FOLDER ] ; then
-  __source_files $HOME/.init/`hostname` "POST"
+if [ -d $SPECIFIC_INIT_FOLDER ] ; then
+  __source_files $SPECIFIC_INIT_FOLDER "POST"
 fi
 
 cd $HOME
