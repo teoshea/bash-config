@@ -3,33 +3,37 @@
 [init]
 	templatedir = ~/.git_template
 [user]
-	name = tom.oshea
-	email = tom.oshea@grantadesign.com
+	name = "Tom O'Shea"
+	email = teoshea@users.noreply.github.com
 [core]
 	autocrlf = input
-	editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin
 	trustctime = false
 [diff]
 	ignoreSubmodules = dirty
+        guitool = kdiff3
 [merge]
 	summary = true
-	tool = p4merge
+	tool = kdiff3
 	prompt = false
+[difftool "kdiff3"]
+        trustExitCode = false
+[mergetool "kdiff3"]
+        trustExitCode = false
 [mergetool "p4merge"]
 	cmd = "/c/Program Files/Perforce/p4merge.exe" \\\"$BASE\\\" \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$MERGED\\\"
+	trustExitCode = true
+[mergetool "bc3"]
+	path = c:/program files (x86)/beyond compare 3/bcomp.exe
+	trustExitCode = true        
 [color]
 	ui = true
 [color "status"]
-  added = green
-  changed = yellow
-  untracked = red reverse
-  branch = magenta
-[mergetool "bc3"]
-	path = c:/program files (x86)/beyond compare 3/bcomp.exe
+        added = green
+        changed = yellow
+        untracked = red reverse
+        branch = magenta
 [rerere]
 	enabled = true
-[mergetool]
-	trustExitCode = true
 [credential]
 	helper = cache --timeout=3600
 [http]

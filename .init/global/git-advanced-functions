@@ -1,5 +1,6 @@
+
 #################################################################
-## GLOBALS
+## ADVANCED / EXPERIMENTAL
 #################################################################
 
 export remotes_ref="remotes"
@@ -10,12 +11,7 @@ export done="done"
 export released_done_re="${releases}\/([0-9]+\.[0-9]+)\/${done}"
 export released_next_re="${releases}\/([0-9]+\.[0-9]+)\/${next}"
 export upcoming_done_re="${remotes_ref}\/${central}\/${done}"
-
-export git_folder=".git"
-export git_template="$HOME/.git_template"
 export git_repository_fetchurl_re="Fetch URL: git@github\.com:([-_0-9A-Za-z]+)\/([-_0-9A-Za-z]+)"
-export git_support_file="$git_folder/git_support"
-
 export mi_merge_branches_file="$git_folder/MI_MERGE_BRANCHES"
 
 declare -A git_remotes=( ["ivan"]="ivantheterrible"
@@ -26,105 +22,6 @@ declare -A git_remotes=( ["ivan"]="ivantheterrible"
 
 declare -A git_repository_properties
 
-alias st="git status"                   # Status
-alias ru="git remote update"            # Remote Update
-alias rb="git branch -m"                # Rename Branch
-alias cm="git commit -m"                # Commit With Comment
-alias fo="git remote update origin"     # Fetch Origin
-alias rhh="git reset HEAD --hard"       # Reset HEAD hard
-alias co="git checkout"                 # Checkout
-alias ai="git add --interactive"        # Add interactive
-alias au="git add --update"             # Add updated
-alias aa="git add --all"                # Add all
-alias ca="git commit --amend"           # Amend commit
-alias find-remote="git remote | grep $1"
-
-
-#################################################################
-## FUNCTIONS: Simple Git related user functions (handy shortcuts)
-#################################################################
-
-# Go to Git root
-gr()
-{
-    cd $git_root
-}
-export -f gr
-
-# Get top level folder of repository
-toplevel()
-{
-    git rev-parse --show-toplevel
-}
-export -f toplevel
-
-# Create Branch at...
-cb()
-{
-    if [ -z ${1+x} ]; then
-       echo "cb - Create Branch at..."
-       echo "Usage: cb new-branchname [basedon-branchname]"
-       return -1
-    fi
-
-    git checkout -B $1 $2
-}
-export -f cb
-
-# Unstage Files
-us()
-{
-    if [ -z ${1+x} ]; then
-        echo "us - Unstage files..."
-        echo "Usage: us file1 [file2...]"
-        return -1
-    fi
-
-    for i in $@
-    do
-        git reset HEAD `find -name "$i*"`
-    done
-}
-export -f us
-    
-# Revert Files
-rv()                                    
-{
-    if [ -z ${1+x} ]; then
-        echo "rv - Revert files..."
-        echo "Usage: rv file1 [file2...]"
-        return -1
-    fi
-
-    for i in $@
-    do
-        git checkout -- "*$i*"
-    done
-}
-export -f rv
-
-# Add Files
-af()
-{
-    if [ -z ${1+x} ]; then
-        echo "af - Add (stage) files..."
-        echo "Usage: af file1 [file2...]"
-        return -1
-    fi
-
-    for i in $@
-    do
-        git add `find -name "$i*"`
-    done
-}
-export -f af
-
-# Push to Origin
-po()
-{
-    git push origin `git rev-parse --abbrev-ref HEAD` ${*}
-}
-export -f po
 
 # Remote Pull
 fr()
