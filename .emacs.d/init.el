@@ -10,42 +10,56 @@
 ;; manually with M-x package-install
 ;; Add in your own as you wish:
 (defvar my-packages
-  '(;; makes handling lisp expressions much, much easier
-    ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-    paredit
-
+  '(
     ;; Web-Mode
+    ;; http://web-mode.org
     web-mode
+
+    ;; Tagedit
+    ;; https://github.com/magnars/tagedit
+    tagedit
     
     ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
-    ;; TODO - enable once required
-    ;; clojure-mode
+    ;clojure-mode
 
     ;; extra syntax highlighting for clojure
-    ;; TODO - enable once required
-    ;; clojure-mode-extra-font-locking
+    ;clojure-mode-extra-font-locking
 
     ;; integration with a Clojure REPL
     ;; https://github.com/clojure-emacs/cider
-    ;; TODO - enable once required
-    ;; cider
+    ;cider
 
     ;; Auto-Complete
-    auto-complete
+    ;auto-complete
+
+    ;;
+    ;emmet-mode
+
+    ;;
+    ;ac-emmet
     
+    ;;
+    ;php-auto-yasnippets
+        
     ;; Flycheck
-    flycheck
+    ;flycheck
 
     ;; PHP Mode
-    php-mode
+    ;php-mode
 
     ;; AC-PHP
-    ac-php
+    ;ac-php
 
     ;;PHPUnit
-    phpunit
+    ;phpunit
     
+    ;;; Packages that make emacs easier to use in general
+
+    ;; makes handling lisp expressions much, much easier
+    ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
+    paredit
+
     ;; allow ido usage in as many contexts as possible. see
     ;; customizations/navigation.el line 23 for a description
     ;; of ido
@@ -61,9 +75,6 @@
 
     ;; colorful parenthesis matching
     rainbow-delimiters
-
-    ;; edit html tags like sexps
-    tagedit
 
     ;; git integration
     magit))
@@ -150,25 +161,19 @@
 ;; Keybindings
 (load "keybindings.el")
 
-;; Package and language-specific
-;;
+;; Package setup
+(load "package-conf.el")
 
-;; Linum
-(load "setup-linum.el")
-
-;; Web-Mode
-(load "setup-web-mode.el")
-
-;; Auto-Complete
-(load "setup-auto-complete.el")
-
-;; Flycheck
-(load "setup-flycheck.el")
-
-;; AC-PHP
-(load "setup-ac-php.el")
-
-
-
-;; (load "setup-clojure.el")
-;; (load "setup-js.el")
+       ;; Linum
+       ;;(load "setup-linum.el")
+       ;; Web-Mode
+       ;;(load "setup-web-mode.el")
+       ;; Auto-Complete
+       ;;(load "setup-auto-complete.el")
+       ;; Flycheck
+       ;;(load "setup-flycheck.el")
+       ;; AC-PHP
+       ;;(load "setup-ac-php.el")
+       ;; (load "setup-clojure.el")
+       ;; (load "setup-js.el")
+       

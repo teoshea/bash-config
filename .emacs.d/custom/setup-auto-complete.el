@@ -1,12 +1,19 @@
+(require 'auto-complete-config)
 (ac-config-default)
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'php-auto-yasnippets)
+(require 'emmet-mode)
+(require 'ac-emmet)
 
 (add-to-list 'ac-modes 'web-mode)
 
 ;; Extend Autocomplete web-mode
-;; not work default-ac
 (setq web-mode-ac-sources-alist
-      '(("php" . (  ;ac-source-php-auto-yasnippets
-                    ;ac-source-yasnippet
+      '(("php" . (  ac-source-php-auto-yasnippets
+                    ac-source-yasnippet
                     ac-source-abbrev
                     ac-source-gtags
                     ac-source-semantic
@@ -15,9 +22,9 @@
                     ac-source-words-in-buffer
                     ac-source-files-in-current-dir
         ))
-        ("html" . ( ;ac-source-emmet-html-aliases 
-                    ;ac-source-emmet-html-snippets
-                    ;ac-source-yasnippet
+        ("html" . ( ac-source-emmet-html-aliases 
+                    ac-source-emmet-html-snippets
+                    ac-source-yasnippet
                     ac-source-abbrev
                     ac-source-gtags
                     ac-source-semantic
@@ -27,8 +34,8 @@
                     ac-source-files-in-current-dir
                   ))
         ("css" . (  ac-source-css-property 
-                    ;ac-source-emmet-css-snippets
-                    ;ac-source-yasnippet
+                    ac-source-emmet-css-snippets
+                    ac-source-yasnippet
                     ac-source-abbrev
                     ac-source-gtags
                     ac-source-semantic
