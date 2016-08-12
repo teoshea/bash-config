@@ -6,6 +6,9 @@
 
 (require 'use-package)
 
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(setq-default flycheck-disabled-checkers '(php/php-phpmd))
+
 (use-package php-mode
   :ensure t
   :mode "\\.php[345]?\\'"
@@ -32,6 +35,9 @@
   (yas-global-mode 1)
   (define-key php-mode-map (kbd "C-]") 'ac-php-find-symbol-at-point)   ;goto define
   (define-key php-mode-map  (kbd "C-t") 'ac-php-location-stack-back   ) ;go back
+
+  (require 'flymake-php)
+  (flymake-php-load)
 )
 
 (defun web-mode-init ()

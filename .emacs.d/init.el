@@ -47,14 +47,19 @@
     ;php-auto-yasnippets
         
     ;; Flycheck
-    ;flycheck
+    ; https://github.com/flycheck/flycheck/
+    flycheck
 
-    ;; PHP Mode
-    ;php-mode
-
-    ;; AC-PHP
-    ;ac-php
-
+    ;; PHP Mode and related package
+    ;; https://github.com/ejmr/php-mode
+    php-mode
+    ;; https://github.com/xcwen/ac-php
+    ac-php
+    ;; https://github.com/nishimaki10/emacs-phpcbf
+    phpcbf
+    ;; https://github.com/purcell/flymake-php
+    flymake-php
+    
     ;;PHPUnit
     ;phpunit
     
