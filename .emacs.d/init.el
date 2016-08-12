@@ -11,6 +11,10 @@
 ;; Add in your own as you wish:
 (defvar my-packages
   '(
+    ;; use-package
+    ;; https://github.com/jwiegley/use-package
+    use-package
+
     ;; Web-Mode
     ;; http://web-mode.org
     web-mode
@@ -131,6 +135,7 @@
 
 ;; Store init.el in register i - so we can jump to this file with C-x r j i
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
+(set-register ?p (cons 'file "~/.emacs.d/custom/package-conf.el"))
 
 ;; Add a directory to our load paths so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
@@ -164,8 +169,6 @@
 ;; Package setup
 (load "package-conf.el")
 
-       ;; Linum
-       ;;(load "setup-linum.el")
        ;; Web-Mode
        ;;(load "setup-web-mode.el")
        ;; Auto-Complete
