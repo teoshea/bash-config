@@ -7,6 +7,13 @@ damtppromptcm () {
         myPWD="${PWD:0:20} ... ${PWD:${#PWD}-30}"
     fi
 
+    git_ps1=`declare -f __git_ps1`
+    if [ -n "$git_ps1" ]; then
+       GIT_INFO=`__git_ps1`
+    else
+       GIT_INFO=""
+    fi
+
     PS1="\[\033]0;$myPWD\007\]"    # set window title
     PS1="$PS1"'\n'                 # new line
     PS1="$PS1"'\[\033[32m\]'       # change to green
@@ -14,7 +21,7 @@ damtppromptcm () {
     PS1="$PS1"'\[\033[33m\]'       # change to brownish yellow
     PS1="$PS1$myPWD"               # current working directory
     PS1="$PS1"'\[\033[36m\]'       # change color to cyan
-    PS1="$PS1"'`__git_ps1`'        # bash function
+    PS1="$PS1$GIT_INFO"            # current git branch, if applicable
     PS1="$PS1"'\[\033[0m\]'        # change color
     PS1="$PS1"'\n'                 # new line
     PS1="$PS1"'$ '                 # prompt: always $
