@@ -3,9 +3,7 @@
 !.emacs.d/init.el
 !.emacs.d/custom
 !.emacs.d/custom/**
-!.emacs.d/vendor
-!.emacs.d/vendor/**
 !.dotfiles
 !.dotfiles/**
 !.init
-!.init/**
+!.init.d/**
