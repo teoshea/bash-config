@@ -11,26 +11,18 @@
 ;; Add in your own as you wish:
 (defvar my-packages
   '(
-    ;; use-package
     ;; https://github.com/jwiegley/use-package
     use-package
 
-    ;; Web-Mode
     ;; http://web-mode.org
-    web-mode
-
-    ;; Tagedit
+    ;web-mode
     ;; https://github.com/magnars/tagedit
-    tagedit
+    ;tagedit
     
-    ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
     ;clojure-mode
-
     ;; extra syntax highlighting for clojure
     ;clojure-mode-extra-font-locking
-
-    ;; integration with a Clojure REPL
     ;; https://github.com/clojure-emacs/cider
     ;cider
 
@@ -46,19 +38,21 @@
     ;;
     ;php-auto-yasnippets
         
-    ;; Flycheck
-    ; https://github.com/flycheck/flycheck/
-    flycheck
-
-    ;; PHP Mode and related package
+    ;; https://github.com/flycheck/flycheck/
+    ;; flycheck
     ;; https://github.com/ejmr/php-mode
     php-mode
     ;; https://github.com/xcwen/ac-php
-    ac-php
+    ;; ac-php
     ;; https://github.com/nishimaki10/emacs-phpcbf
-    phpcbf
+    ;; phpcbf
     ;; https://github.com/purcell/flymake-php
-    flymake-php
+    ;; flymake-php
+    ;; https://blogs.oracle.com/opal/entry/quick_debugging_of_php_scripts (Quick Start)
+    ;; geben
+
+    ;; https://github.com/purcell/default-text-scale
+    default-text-scale
     
     ;;PHPUnit
     ;phpunit
@@ -94,9 +88,7 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("tromey" . "http://tromey.com/elpa/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
@@ -140,12 +132,14 @@
 
 ;; Store init.el in register i - so we can jump to this file with C-x r j i
 (set-register ?i (cons 'file "~/.emacs.d/init.el"))
-(set-register ?p (cons 'file "~/.emacs.d/custom/package-conf.el"))
 
 ;; Add a directory to our load paths so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'load-path "~/.emacs.d/custom")
+
+;; Loads global functions
+(load "global-functions.el")
 
 ;; Sets up exec-path-from-shell so that Emacs will use the correct
 ;; environment variables
@@ -168,12 +162,6 @@
 ;; For editing lisps
 (load "elisp-editing.el")
 
-;; Keybindings
-(load "keybindings.el")
-
-;; Package setup
-(load "package-conf.el")
-
        ;; Web-Mode
        ;;(load "setup-web-mode.el")
        ;; Auto-Complete
@@ -184,4 +172,41 @@
        ;;(load "setup-ac-php.el")
        ;; (load "setup-clojure.el")
        ;; (load "setup-js.el")
-       
+
+;;(autoload 'geben "geben" "DBGp protocol frontend, a script debugger" t)
+
+;; Additional custom config for individual packages
+(load "email-conf.el")
+(load "org-mode-conf.el")
+(load "php-mode-conf.el")
+(load "keybindings.el")
+
+
+;; Debug a simple PHP script.
+;; Change the session key my-php-54 to any session key text you like
+(defun my-php-debug ()
+  "Run current PHP script for debugging with geben"
+  (interactive)
+  (call-interactively 'geben)
+  (shell-command
+    (concat "XDEBUG_CONFIG='idekey=my-php-54' /home/cjones/php54/bin/php "
+    (buffer-file-name) " &"))
+  )
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-phpcs-standard "psr2")
+ '(sql-postgres-login-params
+   (quote
+    ((user :default "damtpdb")
+     password server
+     (database :default "damptdb")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

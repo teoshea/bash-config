@@ -4,6 +4,9 @@
 ;; a matter of preference and may require some fiddling to match your
 ;; preferences
 
+(require 'default-text-scale)
+(require 'linum-off)
+
 ;; Show line numbers
 (global-linum-mode)
 
@@ -34,10 +37,13 @@
 (load-theme 'tomorrow-night-bright t)
 
 ;; Set preferred font
-(set-frame-font "Inconsolata 12")
+(set-frame-font "Deja Vu Sans Mono")
 
 ;; Increase font size for better readability
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 150)
+ ;;Make the line numbers blueish
+(set-face-foreground 'linum "PowderBlue")
+(set-face-attribute 'linum nil :height 110)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
