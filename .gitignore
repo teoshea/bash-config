@@ -6,4 +6,5 @@
 !.dotfiles
 !.dotfiles/**
 !.init
+!.init.d
 !.init.d/**

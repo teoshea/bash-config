@@ -1,0 +1,38 @@
+#################################################################
+## BUILD COMMANDS
+#################################################################
+
+__build()
+{
+	local solutionsfolder=`toplevel`/$1
+	local solutionpattern=$2
+	local solutionextension=$3
+	
+	local configuration="Debug"
+	local target="Build"
+		
+	if [[ ${4^^} == "R" ]]; then
+		configuration="Release"
+    fi
+	if [[ ${5^^} == "F" ]]; then
+        target="Rebuild"
+    fi
+	
+	for f in `find $solutionsfolder -maxdepth 1 -type f \( -iname "*$solutionpattern*$solutionextension" \)`
+	do
+		if [[ $target == "Rebuild" ]]; then
+			msbuild $f -p:Configuration=$configuration -target:Clean
+		fi
+		
+		msbuild $f -p:Configuration=$configuration -target:Build
+	done
+}
+
+alias libs="__build solutions GrantaLibs sln D I"
+alias all="__build solutions MIAll sln D I"
+alias libs-clean="__build solutions GrantaLibs sln D F"
+alias all-clean="__build solutions MIAll sln D F"
+alias libs-release="__build solutions GrantaLibs sln R F"
+alias all-release="__build solutions MIAll sln R F"
+
+
