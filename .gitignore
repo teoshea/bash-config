@@ -3,6 +3,8 @@
 !.emacs.d/init.el
 !.emacs.d/custom
 !.emacs.d/custom/**
+!.emacs.d/themes
+!.emacs.d/themes/**
 !.dotfiles
 !.dotfiles/**
 !.init
