@@ -38,3 +38,5 @@
 	helper = cache --timeout=3600
 [http]
 	sslVerify = false
+[gpg]
+	program = gpg2
