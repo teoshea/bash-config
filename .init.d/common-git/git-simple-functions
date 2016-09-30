@@ -9,7 +9,6 @@
 
 export git_template="$HOME/.git_template"
 
-
 #################################################################
 ## ALIASES: Simple Git aliases to reduce typing
 #################################################################
@@ -21,6 +20,7 @@ fi
 # Add git completion to aliases
 __git_complete gc _git_checkout
 __git_complete gp _git_pull
+__git_complete wco _git_checkout
 
 alias st="git status"                   # Status
 alias ru="git remote update"            # Remote Update
@@ -48,6 +48,16 @@ alias find-remote="git remote | grep $1"
 #    cd $git_root
 #}
 #export -f gr
+
+# "Web" checkout - a fudge for where I have my umask set restrictively,
+# but want to check out files that are readable to all
+wco()
+{
+    oldumask=`umask`
+    umask 0022
+    git checkout "$@"
+    umask $oldumask
+}
 
 # Show the top level folder of repository
 toplevel()
