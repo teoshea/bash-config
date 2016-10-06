@@ -3,8 +3,8 @@
 [init]
 	templatedir = ~/.git_template
 [user]
-	name = "Tom O'Shea"
-	email = teoshea@users.noreply.github.com
+	name = Tom O'Shea
+	email = teo26@cam.ac.uk
 [core]
 	autocrlf = input
 	trustctime = false
