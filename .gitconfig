@@ -1,7 +1,7 @@
 [alias]
 	co = checkout
 [init]
-	templatedir = ~/.git_template
+	templatedir = $HOME/.git_template/
 [user]
 	name = Tom O'Shea
 	email = teo26@cam.ac.uk
