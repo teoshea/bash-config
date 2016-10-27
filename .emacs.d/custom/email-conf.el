@@ -90,7 +90,7 @@
 (setq mu4e-attachment-dir  "~/Downloads")
 
 ;; allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "offlineimap")
+(setq mu4e-get-mail-command "mbsync hermes")
 
 ;; update every 10 mins
 (setq mu4e-update-interval 600)

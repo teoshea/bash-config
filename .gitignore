@@ -11,3 +11,6 @@
 !.init
 !.init.d
 !.init.d/**
+!.gitignore
+!.git_templates
+!.git_templates/**

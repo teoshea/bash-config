@@ -1,8 +1,0 @@
-src_server/MIServer/config/MI.thomas.oshea.config
-ReSharper*
-
-solutions/.vs
-solutions/*UpgradeLog*
-src_web/MIWeb/css/admin.css
-src_web/MIWeb/css/templateGenerator.css
-node_modules
