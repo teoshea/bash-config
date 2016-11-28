@@ -9,10 +9,10 @@
 (setq mu4e-headers-fields
       '((:human-date . 11)
         (:flags . 5)
+        (:subject . 51)
         (:mailing-list . 13)
-        (:from-or-to . 20)
-        (:from . 20)
-        (:subject)))
+        (:from-or-to . 10)
+        (:from . 10)))
 
 (setq mu4e-sent-folder "/hermes/Sent")
 (setq mu4e-drafts-folder "/hermes/Drafts")
@@ -44,25 +44,26 @@
      (message-signature t)
      (message-signature-file "~/.hermes-signature")
      )
-    ("gmail"
-     (user-mail-address "osheate@gmail.com")
-     (user-reply-to-address "osheate@gmail.com")
-     (mu4e-user-mail-address-list ("osheate@gmail.com"))
-     (mu4e-sent-folder "/gmail/Sent Mail")
-     (mu4e-drafts-folder "/gmail/Drafts")
-     (mu4e-trash-folder "/gmail/Trash")
-     (mu4e-refile-folder "/gmail/All Mail")
-     ; ;don't save message to Sent Messages, GMail/IMAP will take care of this
-     (mu4e-sent-messages-behavior lambda ()
-                                  ('delete))
+    ;; ("gmail"
+    ;;  (user-mail-address "osheate@gmail.com")
+    ;;  (user-reply-to-address "osheate@gmail.com")
+    ;;  (mu4e-user-mail-address-list ("osheate@gmail.com"))
+    ;;  (mu4e-sent-folder "/gmail/Sent Mail")
+    ;;  (mu4e-drafts-folder "/gmail/Drafts")
+    ;;  (mu4e-trash-folder "/gmail/Trash")
+    ;;  (mu4e-refile-folder "/gmail/All Mail")
+    ;;                                     ; ;don't save message to Sent Messages, GMail/IMAP will take care of this
+    ;;  (mu4e-sent-messages-behavior lambda ()
+    ;;                               ('delete))
      
-     (smtpmail-smtp-server "smtp.gmail.com")
-     (smtpmail-default-smtp-server "smtp.gmail.com")
-     (smtpmail-starttls-credentials '(("smtp.hermes.cam.ac.uk" 587 nil nil)))
-     (smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg"))
-     (smtpmail-smtp-service 587)
-     (message-signature nil)
-     )))
+    ;;  (smtpmail-smtp-server "smtp.gmail.com")
+    ;;  (smtpmail-default-smtp-server "smtp.gmail.com")
+    ;;  (smtpmail-starttls-credentials '(("smtp.hermes.cam.ac.uk" 587 nil nil)))
+    ;;  (smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg"))
+    ;;  (smtpmail-smtp-service 587)
+    ;;  (message-signature nil)
+    ;;  )
+    ))
 
 (setq mu4e-user-mail-address-list
       (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
@@ -82,23 +83,24 @@
         ("maildir:/hermes/Archive" "Hermes Archive" ?a)
         ("maildir:/hermes/Sent" "Hermes Sent" ?s)
         ("maildir:/hermes/Trash" "Hermes Trash" ?t)
-        ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Inbox" "Gmail Inbox" ?I)
-        ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Drafts" "Gmail Drafts" ?D)
-        ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Sent" "Gmail Sent" ?S)
-        ("maildir:\"/gmail/[Google Mail].All Mail\" AND NOT tag:\\\\Inbox" "Gmail Archive" ?A)))
+        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Inbox" "Gmail Inbox" ?I)
+        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Drafts" "Gmail Drafts" ?D)
+        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Sent" "Gmail Sent" ?S)
+        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND NOT tag:\\\\Inbox" "Gmail Archive" ?A)
+        ))
 
 (setq mu4e-attachment-dir  "~/Downloads")
 
 ;; allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "mbsync hermes")
+(setq mu4e-get-mail-command "true")
+;; (setq mu4e-get-mail-command "mbsync hermes")
+(setq mu4e-change-filenames-when-moving t)
 
 ;; update every 10 mins
 (setq mu4e-update-interval 600)
 
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
-
-(setq mu4e-change-filenames-when-moving t)
 
 (defun my-mu4e-set-account ()
   "Set the account for composing a message."
