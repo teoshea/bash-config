@@ -83,11 +83,7 @@
         ("maildir:/hermes/Archive" "Hermes Archive" ?a)
         ("maildir:/hermes/Sent" "Hermes Sent" ?s)
         ("maildir:/hermes/Trash" "Hermes Trash" ?t)
-        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Inbox" "Gmail Inbox" ?I)
-        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Drafts" "Gmail Drafts" ?D)
-        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND tag:\\\\Sent" "Gmail Sent" ?S)
-        ;; ("maildir:\"/gmail/[Google Mail].All Mail\" AND NOT tag:\\\\Inbox" "Gmail Archive" ?A)
-        ))
+       ))
 
 (setq mu4e-attachment-dir  "~/Downloads")
 
