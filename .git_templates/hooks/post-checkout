@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Allow all users to read the contents of the git repo
-chmod a+r -R

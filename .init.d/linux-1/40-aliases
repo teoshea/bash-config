@@ -1,0 +1,11 @@
+alias npm-exec='PATH=$(npm bin):$(npm bin -g 2> /dev/null):$PATH'
+alias ng='npm-exec ng'
+alias azure='npm-exec azure'
+alias gito='ssh maths@git.csx.cam.ac.uk'
+
+function b {
+	r=`umask`
+	umask 0027
+	git checkout -B $1
+	umask $r
+}

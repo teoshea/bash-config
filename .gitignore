@@ -5,9 +5,6 @@
 !.emacs.d/custom/**
 !.emacs.d/themes
 !.emacs.d/themes/**
-!.dotfiles
-!.dotfiles/**
-!.env_extra
 !.init
 !.init.d
 !.init.d/**
