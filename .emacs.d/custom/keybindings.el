@@ -30,7 +30,6 @@
 
 (global-set-key (kbd "s-=") 'default-text-scale-increase)
 (global-set-key (kbd "s-+") 'default-text-scale-increase)
-(global-set-key (kbd "s-=") 'default-text-scale-increase)
 (global-set-key (kbd "s--") 'default-text-scale-decrease)
 (global-set-key (kbd "C-s-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "C-s-<right>") 'enlarge-window-horizontally)

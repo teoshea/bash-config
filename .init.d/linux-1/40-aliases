@@ -2,6 +2,8 @@ alias npm-exec='PATH=$(npm bin):$(npm bin -g 2> /dev/null):$PATH'
 alias ng='npm-exec ng'
 alias azure='npm-exec azure'
 alias gito='ssh maths@git.csx.cam.ac.uk'
+alias gr='cd /git'
+alias dr='cd /drupal'
 
 function b {
 	r=`umask`
